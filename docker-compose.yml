@@ -65,33 +65,19 @@ services:
       /bin/bash -c "
       airflow db init &&
       airflow users create -u airflow -f Airflow -l Apache -r Admin -e airflow@example.com -p airflow &&
+      (airflow scheduler &) &&
       airflow webserver"
     deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities: [gpu]
+          resources:
+            reservations:
+              devices:
+                - driver: nvidia
+                  count: 1
+                  capabilities: [gpu]
+ 
 
-  test:
-    image: nvidia/cuda:12.3.1-base-ubuntu20.04
-    command: nvidia-smi
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities: [gpu]
-     
-
-
-
-
-     
+ 
 volumes:
   db_data:
   db_airflow_data:
-
 
